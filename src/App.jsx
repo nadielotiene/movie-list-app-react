@@ -10,8 +10,22 @@ export default function App() {
     { id: 3, title: "Interstellar", year: 2014, rating: 4 }
   ]);
 
+  const [editingMovie, setEditingMovie] = useState(null);
+
   function addMovie(newMovie) {
     setMovies([...movies, newMovie]);
+  }
+
+  function editMovie(movie) {
+    setEditingMovie(movie);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function updateMovie(updateMovie) {
+    setMovies(movies.map(m =>
+      m.id === updateMovie.id ? updateMovie : m
+    ));
+    setEditingMovie(null);
   }
 
   function deleteMovie(movieId) {
@@ -21,21 +35,21 @@ export default function App() {
   return (
     <>
       <h1>My Movie List</h1>
+      <AddMovieForm 
+        onAddMovie={addMovie} 
+        onUpdateMovie={updateMovie}
+        editingMovie={editingMovie}
+      />
+
       {movies.map(movie => (
         <MovieCard
           key={movie.id}
-          id={movie.id}
-          title={movie.title}
-          year={movie.year} 
-          rating={movie.rating}
-          // or
-          // {...movie}
+          movie={movie}
+          onEdit={editMovie}
           onDelete={deleteMovie}
         />
       ))}
 
-      <AddMovieForm onAddMovie={addMovie} 
-      />
     </>
   )
 }

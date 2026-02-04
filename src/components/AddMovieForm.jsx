@@ -1,9 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function AddMovieForm({ onAddMovie }) {
+export default function AddMovieForm({ onAddMovie, onUpdateMovie, editingMovie }) {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [rating, setRating] = useState('');
+
+  useEffect(() => {
+    if (editingMovie) {
+      setTitle(editingMovie.title);
+      setYear(editingMovie.year.toString());
+      setRating(editingMovie.rating.toString());
+    }
+  }, [editingMovie]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -11,16 +19,18 @@ export default function AddMovieForm({ onAddMovie }) {
     if (!title.trim() || !year.trim() || !rating.trim()) {
       return;
     }
-
     
-    const newMovie = {
-      id: Date.now(),
+    const movieData = {
       title,
       year: Number(year),
       rating: Number(rating)
     };
 
-    onAddMovie(newMovie);
+    if (editingMovie) {
+      onUpdateMovie({ ...movieData, id: editingMovie.id });
+    } else {
+      onAddMovie({ ...movieData, id: Date.now()});
+    }
 
     setTitle('');
     setYear('');
@@ -50,8 +60,11 @@ export default function AddMovieForm({ onAddMovie }) {
           value={rating}
           onChange={(e) => setRating(e.target.value)}
         />
-        <button type="submit">Add Movie</button>
+        <button type="submit">
+          {editingMovie ? "Update Movie" : "Add Movie"}        
+        </button>
       </form>
+      <hr />
     </>
   );
 }

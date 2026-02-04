@@ -1,10 +1,12 @@
-export default function MovieCard({ id, title, year, rating, onDelete }) {
+export default function MovieCard({ movie, onEdit, onDelete }) {
+  
   return (
     <div className="card--div">
-      <h3>{title}</h3>
-      <p>Year: {year}</p>
-      <p>Rating: {"⭐️".repeat(rating)}</p>
-      <button onClick={() => onDelete(id)}>Delete</button>
+      <h3>{movie.title}</h3>
+      <p>Year: {movie.year}</p>
+      <p>Rating: {"⭐️".repeat(movie.rating)}</p>
+      <button onClick={() => onEdit(movie)}>Edit</button>
+      <button onClick={() => onDelete(movie.id)}>Delete</button>
     </div>
   );
 }
