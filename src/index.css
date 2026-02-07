@@ -30,6 +30,17 @@ body {
   min-height: 100vh;
 }
 
+.card--div {
+  border: 2px solid #646cff;
+  border-radius: 3px;
+  margin: 2rem 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;

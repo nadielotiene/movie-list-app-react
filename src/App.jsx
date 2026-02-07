@@ -12,6 +12,10 @@ export default function App() {
 
   const [editingMovie, setEditingMovie] = useState(null);
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults]= useState([]);
+  const [searching, setSearching] = useState(false);
+
   function addMovie(newMovie) {
     setMovies([...movies, newMovie]);
   }
@@ -32,8 +36,75 @@ export default function App() {
     setMovies(movies.filter(m => m.id !== movieId))
   }
 
+  async function searchMovies(query) {
+    if (!query.trim()) return;
+
+    try {
+      setSearching(true);
+      const response = await fetch(
+        `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&s=${query}`
+      );
+      const data = await response.json();
+
+      if (data.Response === "True") {
+        setSearchResults(data.Search);
+      } else {
+        setSearchResults([]);
+      }
+      setSearching(false);
+    } catch (err) {
+      console.error(err);
+      setSearching(false);
+    }
+  }
+
+  function addMoviesFromSearch(result) {
+    const newMovie = {
+      id: result.imdbID,
+      title: result.Title,
+      year: parseInt(result.Year),
+      rating: 5,
+      poster: result.Poster !== "N/A" ? result.Poster : null
+    };
+    setMovies([...movies, newMovie]);
+    setSearchResults([]);
+    setSearchQuery('');
+  }
+
   return (
     <>
+      <div className="search-section">
+        <h2>SearchMovies</h2>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          searchMovies(searchQuery);
+        }}>
+          <input 
+            placeholder="Search for a movie..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit" disabled={searching}>
+            {searching ? "Searching..." : "Search"}
+          </button>
+        </form>
+
+        {searchResults.length > 0 && (
+          <div className="search-results">
+            <h3>Results:</h3>
+            {searchResults.map(result => (
+              <div key={result.imdbID} className="search-result">
+                <img src={result.Poster} alt={result.Title} width="50" />
+                <span>{result.Title} ({result.Year})</span>
+                <button onClick={() => addMoviesFromSearch(result)}>
+                  Add to List
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       <h1>My Movie List</h1>
       <AddMovieForm 
         onAddMovie={addMovie} 

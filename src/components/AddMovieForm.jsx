@@ -5,6 +5,12 @@ export default function AddMovieForm({ onAddMovie, onUpdateMovie, editingMovie }
   const [year, setYear] = useState('');
   const [rating, setRating] = useState('');
 
+  function clearForm() {
+    setTitle('');
+    setYear('');
+    setRating('');
+  }
+
   useEffect(() => {
     if (editingMovie) {
       setTitle(editingMovie.title);
@@ -27,14 +33,21 @@ export default function AddMovieForm({ onAddMovie, onUpdateMovie, editingMovie }
     };
 
     if (editingMovie) {
-      onUpdateMovie({ ...movieData, id: editingMovie.id });
+      onUpdateMovie({ 
+        ...movieData, 
+        id: editingMovie.id,
+        poster: editingMovie.poster
+      });
     } else {
       onAddMovie({ ...movieData, id: Date.now()});
     }
 
-    setTitle('');
-    setYear('');
-    setRating('');
+    clearForm()
+  }
+
+
+  function cancelButton() {
+    clearForm()
   }
 
   return (
@@ -62,6 +75,13 @@ export default function AddMovieForm({ onAddMovie, onUpdateMovie, editingMovie }
         />
         <button type="submit">
           {editingMovie ? "Update Movie" : "Add Movie"}        
+        </button>
+        <button 
+          type="button"
+          className='cancel-btn'
+          onClick={cancelButton}        
+        >
+          Cancel
         </button>
       </form>
       <hr />
