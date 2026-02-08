@@ -15,6 +15,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults]= useState([]);
   const [searching, setSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   function addMovie(newMovie) {
     setMovies([...movies, newMovie]);
@@ -41,6 +42,7 @@ export default function App() {
 
     try {
       setSearching(true);
+      setHasSearched(true);
       const response = await fetch(
         `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&s=${query}`
       );
@@ -59,6 +61,11 @@ export default function App() {
   }
 
   function addMoviesFromSearch(result) {
+    if (isMovieInList(result.imdbID)) {
+      alert("This movie is already in your list!");
+      return;
+    }
+
     const newMovie = {
       id: result.imdbID,
       title: result.Title,
@@ -69,6 +76,10 @@ export default function App() {
     setMovies([...movies, newMovie]);
     setSearchResults([]);
     setSearchQuery('');
+  }
+
+  function isMovieInList(movieId) {
+    return movies.some(m => m.id === movieId);
   }
 
   return (
@@ -96,12 +107,19 @@ export default function App() {
               <div key={result.imdbID} className="search-result">
                 <img src={result.Poster} alt={result.Title} width="50" />
                 <span>{result.Title} ({result.Year})</span>
-                <button onClick={() => addMoviesFromSearch(result)}>
-                  Add to List
+                <button 
+                  onClick={() => addMoviesFromSearch(result)}
+                  disabled={isMovieInList(result.imdbID)}
+                >
+                  {isMovieInList(result.imdbID) ? "Already Added" : "Add to List"}
                 </button>
               </div>
             ))}
           </div>
+        )}
+
+        {hasSearched && searchResults.length === 0 && !searching && (
+          <p className="no-results">{`No movies found for "${searchQuery}". Try another search!`}</p>
         )}
       </div>
 
@@ -112,14 +130,20 @@ export default function App() {
         editingMovie={editingMovie}
       />
 
-      {movies.map(movie => (
-        <MovieCard
-          key={movie.id}
-          movie={movie}
-          onEdit={editMovie}
-          onDelete={deleteMovie}
-        />
-      ))}
+      {movies.length === 0 ? (
+        <p className="empty-state">
+          No movies in your list yet. Search and add some movies above!
+        </p>
+      ) : (
+        movies.map(movie => (
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            onEdit={editMovie}
+            onDelete={deleteMovie}
+          />
+        ))
+      )}
 
     </>
   )
