@@ -40,3 +40,33 @@
 .read-the-docs {
   color: #888;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+.search-input-wrapper {
+  position: relative;
+  display: inline-block;
+  /* width: 100%; */
+}
+
+.movie-title {
+  /* overflow-wrap: break-word; */
+}
+
+.clear-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #999;
+  padding: 0 5px;
+}
+
+.clear-button:hover {
+  color: #333;
+}
+
