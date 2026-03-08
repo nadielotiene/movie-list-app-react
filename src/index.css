@@ -36,11 +36,52 @@ body {
 }
 
 .card--div {
-  display: flex;
+  position: relative;
+  width: 250px;  /* Match your image width */
   border: 2px solid #646cff;
   border-radius: 3px;
-  margin: 2rem 0;
-  line-height: 1;
+  margin: 2rem;
+  overflow: hidden;  /* Keep everything contained */
+}
+
+.card-poster {
+  width: 100%;
+  display: block;
+}
+
+.hover-details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.90);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.hover-details > h3 {
+  margin: .5px;
+}
+
+.hover-details > p {
+  margin: .5px;
+}
+
+.buttons > button {
+  padding: .15em .75em;
 }
 
 .buttons {

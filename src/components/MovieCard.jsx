@@ -9,17 +9,17 @@ export default function MovieCard({ movie, onEdit, onDelete }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {movie.poster && <img src={movie.poster} alt={movie.title} width="250" />}
+      {movie.poster && <img src={movie.poster} alt={movie.title} className='card-poster' />}
 
       {isHovered && (
         <div className="hover-details">
           <h3 className='movie-title'>{movie.title}</h3>
           <p>Year: {movie.year}</p>
           <p>My Rating: {"⭐️".repeat(movie.rating)}</p>
-          <p>imdbRating: {movie.imdbRating}</p>
+          {/* <p>imdbRating: {movie.imdbRating}</p> */}
           {/* <p>Plot: {movie.plot}</p> */}
-          <p>Director: {movie.director}</p>
-          <p>Actors: {movie.actors}</p>
+          {/* <p>Director: {movie.director}</p> */}
+          {/* <p>Actors: {movie.actors}</p> */}
           <p>Genre: {movie.genre}</p>
           <section className="buttons">
             <button onClick={() => onEdit(movie)}>Edit</button>
