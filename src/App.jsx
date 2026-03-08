@@ -10,6 +10,8 @@ export default function App() {
     return savedMovies ? JSON.parse(savedMovies) : []
   });
 
+  const [sortBy, setSortBy] = useState('title');
+
   useEffect(() => {
     localStorage.setItem('movieList',JSON.stringify(movies));
   }, [movies])
@@ -82,8 +84,20 @@ export default function App() {
     return movies.some(m => m.id === movieId);
   }
 
+  const sortedMovies = [...movies].sort((a, b) => {
+    if (sortBy === 'title') {
+      return a.title.localeCompare(b.title);
+    } else if (sortBy === 'year') {
+      return b.year - a.year;
+    } else if (sortBy === 'rating') {
+      return b.rating - a.rating;
+    }
+    return 0;
+  });
+
   return (
     <>
+
       <h1>My Movie List</h1>
 
       {/* <h2>Search Movies</h2> */}
@@ -91,6 +105,15 @@ export default function App() {
         onAddMovie={addMoviesFromSearch}
         isMovieInList={isMovieInList}
       />
+      
+      <div className="sort-section">
+        <label>Sort by: </label>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="title">Title (A-Z)</option>
+          <option value="year">Year (Newest)</option>
+          <option value="rating">My Rating</option>
+        </select>
+      </div>
 
       <AddMovieForm 
         onAddMovie={addMovie} 
@@ -103,7 +126,7 @@ export default function App() {
           No movies in your list yet. Search and add some movies above!
         </p>
       ) : (
-        movies.map(movie => (
+        sortedMovies.map(movie => (
           <MovieCard
             key={movie.id}
             movie={movie}
@@ -112,7 +135,6 @@ export default function App() {
           />
         ))
       )}
-
     </>
   )
 }
