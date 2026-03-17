@@ -20,7 +20,7 @@ export default function MovieSearch({ onAddMovie, isMovieInList }) {
       setSearching(true);
       setHasSearched(true);
       const response = await fetch(
-        `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&s=${query}`
+        `https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&s=${query}`
       );
       const data = await response.json();
 

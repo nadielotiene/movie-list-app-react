@@ -41,7 +41,7 @@ export default function App() {
   async function fetchMovieDetails(imdbID) {
     try {
       const response = await fetch(
-        `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&i=${imdbID}`
+        `https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&i=${imdbID}`
       );
       const data = await response.json();
       return data;
