@@ -16,23 +16,23 @@ export default function App() {
     localStorage.setItem('movieList',JSON.stringify(movies));
   }, [movies])
 
-  const [editingMovie, setEditingMovie] = useState(null);
+  // const [editingMovie, setEditingMovie] = useState(null);
 
-  function addMovie(newMovie) {
-    setMovies([...movies, newMovie]);
-  }
+  // function addMovie(newMovie) {
+  //   setMovies([...movies, newMovie]);
+  // }
 
-  function editMovie(movie) {
-    setEditingMovie(movie);
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }
+  // function editMovie(movie) {
+  //   setEditingMovie(movie);
+  //   window.scrollTo({top: 0, behavior: 'smooth'});
+  // }
 
-  function updateMovie(updateMovie) {
-    setMovies(movies.map(m =>
-      m.id === updateMovie.id ? updateMovie : m
-    ));
-    setEditingMovie(null);
-  }
+  // function updateMovie(updateMovie) {
+  //   setMovies(movies.map(m =>
+  //     m.id === updateMovie.id ? updateMovie : m
+  //   ));
+  //   setEditingMovie(null);
+  // }
 
   function deleteMovie(movieId) {
     setMovies(movies.filter(m => m.id !== movieId))
@@ -115,25 +115,29 @@ export default function App() {
         </select>
       </div>
 
-      <AddMovieForm 
+      {/* <AddMovieForm 
         onAddMovie={addMovie} 
         onUpdateMovie={updateMovie}
         editingMovie={editingMovie}
-      />
+      /> */}
+
+      <hr />
 
       {movies.length === 0 ? (
         <p className="empty-state">
           No movies in your list yet. Search and add some movies above!
         </p>
       ) : (
-        sortedMovies.map(movie => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            onEdit={editMovie}
-            onDelete={deleteMovie}
-          />
-        ))
+        <section className="movie-grid">
+          {sortedMovies.map(movie => (
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              // onEdit={editMovie}
+              onDelete={deleteMovie}
+            />
+        ))}
+          </section>
       )}
     </>
   )

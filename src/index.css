@@ -24,7 +24,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  /* display: grid; */
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -35,13 +35,25 @@ body {
   flex-direction: column;
 }
 
+.movie-grid {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  /* margin-top: 2rem; */
+}
+
 .card--div {
   position: relative;
   width: 250px;  /* Match your image width */
-  border: 15px dotted goldenrod;
+  border: 2px solid #646cff;
   border-radius: 3px;
   margin: 2rem;
   overflow: hidden;  /* Keep everything contained */
+}
+
+.card--div:hover {
+  border: 2px solid #535bf2;
 }
 
 .card-poster {
@@ -61,7 +73,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   overflow-y: auto;
-
+  
   opacity: 0;
   animation: fadeIn 0.3s ease forwards;
 }
@@ -102,13 +114,13 @@ hr {
   height: .10rem
 }
 
-.form {
-  display: flex;
+form {
+  /* display: flex; */
   flex-direction: column;
   justify-content: space-around;
 }
 
-.form > input, .form > button {
+.form > input, .form > button, input {
   padding: .5rem;
   margin: .5rem;
 }
